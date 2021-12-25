@@ -7,21 +7,21 @@
   />
 </template>
 <script setup>
-import { defineProps, ref, defineEmits, watch, onMounted } from "vue";
+import { defineProps, ref, defineEmits, watch } from "vue";
 const props = defineProps({
   inputType: {
     type: String,
     default: "text",
   },
-  viInput: {
+  modelValue: {
     type: [String, Number],
   },
 });
 let input = ref("");
-input.value = props.viInput;
-// 监听props.viInput
+input.value = props.modelValue;
+// 监听props.modelValue
 watch(
-  () => props.viInput,
+  () => props.modelValue,
   (newVal, oldVal) => {
     input.value = newVal;
   },
@@ -30,9 +30,9 @@ watch(
     deep: true, // 深度监听
   }
 );
-const emit = defineEmits(["update:viInput"]);
+const emit = defineEmits(["update:modelValue"]);
 const onAgeInput = (event) => {
-  emit("update:viInput", event.target.value);
+  emit("update:modelValue", event.target.value);
 };
 </script>
 <script>

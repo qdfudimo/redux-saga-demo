@@ -1,0 +1,15 @@
+[
+    {
+      "compName": "Button",
+      "compZhName": "Button 按钮",
+      "compDesc": "这是一个按钮",
+      "compClassName": "button"
+    },
+    {
+      "compName": "Input",
+      "compZhName": "Input 输入框",
+      "compDesc": "这是输入框",
+      "compClassName": "Input"
+    }
+  ]
+  

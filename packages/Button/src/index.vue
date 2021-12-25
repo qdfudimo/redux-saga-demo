@@ -16,6 +16,7 @@ defineEmits(['click']);
 </script>
 <style scoped lang="less">
 .vi-button {
+  cursor: pointer;
   appearance: none;
   padding: 5px 10px;
   background: lightskyblue;
