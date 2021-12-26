@@ -39,7 +39,7 @@ const data = reactive({
 });
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 html,
 body {
   margin: 0;

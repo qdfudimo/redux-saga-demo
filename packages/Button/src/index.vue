@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { ref,defineEmits } from "vue";
+import { ref } from "vue";
 let name = ref("你好啊");
 defineEmits(['click']);
 </script>

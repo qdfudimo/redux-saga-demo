@@ -7,7 +7,7 @@
   />
 </template>
 <script setup>
-import { defineProps, ref, defineEmits, watch } from "vue";
+import { defineProps, ref, watch } from "vue";
 const props = defineProps({
   inputType: {
     type: String,

@@ -73,7 +73,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 pre {
   line-height: 0;
 }

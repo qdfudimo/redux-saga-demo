@@ -1,4 +1,8 @@
 'use strict';
+/**
+ * 输入 node ./test.js 组件英文名 组件名
+ * 输入 node ./test.js lazyLoad 懒加载
+ */
 
 console.log();
 process.on('exit', () => {
@@ -17,50 +21,59 @@ const uppercamelcase = require('uppercamelcase');
 const componentname = process.argv[2];
 const chineseName = process.argv[3] || componentname;
 const ComponentName = uppercamelcase(componentname);
-const PackagePath = path.resolve(__dirname, '../../packages', componentname);
+const PackagePath = path.resolve(__dirname, '../../packages', ComponentName);
 const Files = [{
     filename: 'index.js',
     content: `import ${ComponentName} from './src/index.vue';
-    /* istanbul ignore next */
-    const ${ComponentName}Plugin = {
-      install(app) {
-          app.component(${ComponentName}.name, ${ComponentName});
-      }
-    };
-    export {${ComponentName}};`
+/* istanbul ignore next */
+export const ${ComponentName}Plugin = {
+  install(app) {
+      app.component(${ComponentName}.name, ${ComponentName});
+  }
+};
+export {${ComponentName}};`
   },
   {
     filename: 'src/index.vue',
     content: `<template>
-    <div>${ComponentName} ${chineseName}</div>
-    </template>
-    <script>
-    export default {
-      name: 'vi${ComponentName}'
-    };
-    </script>
-    <style scoped lang="less">
-    </style>`
+  <div class="my-${ComponentName}">${ComponentName} ${chineseName}</div>
+</template>
+
+<script>
+  export default {
+    name: 'vi${ComponentName}'
+  };
+</script>
+
+<style scoped lang="less">
+  .my-${ComponentName} {
+
+  }
+</style>`
   },
   {
     filename: 'docs/demo.vue',
     content: `<template>
-    <${ComponentName} />
-    </template>
-    <script setup>
-    </script>`
+  <vi-${componentname} />
+</template>
+
+<script setup>
+</script>`
   },
   {
     filename: 'docs/README.md',
     content: `<script setup>
-    import demo from './demo.vue'
-    </script>
+import demo from './demo.vue'
+</script>
     
-    # ${chineseName}组件
-    
-    <Preview comp-name="${ComponentName}" demo-name="demo">
-      <demo />
-    </Preview>`
+# ${chineseName}组件
+
+## 默认：这是一个新组件
+
+## 基础用法
+<Preview comp-name="${ComponentName}" demo-name="demo">
+  <demo />
+</Preview>`
   }
 ];
 
@@ -86,14 +99,14 @@ Files.forEach(file => {
     .write(file.content, 'utf8')
     .end('\n');
 });
-
+console.log('创建 package组建文件夹');
 // 添加到 nav.js
 const navConfigFile = path.join(__dirname, '../../src/nav.js');
 let elementTsText = fs.readFileSync(navConfigFile);
 // let elementTsText = fs.readFileSync(navConfigFile,'utf-8');
 const index = elementTsText.indexOf('[') + 1;
 const importString = `{
-    title: '${ComponentName}',
+    title: '${chineseName}',
     name: '${ComponentName}',
     path: '/components/${ComponentName}',
     component: () => import('../packages/${ComponentName}/docs/README.md'),
@@ -102,6 +115,7 @@ elementTsText = elementTsText.slice(0, index) + importString + "," + '\n' + elem
 fileSave(navConfigFile)
   .write(elementTsText, 'utf8')
   .end('\n');
+console.log('添加到 nav.js');
 //添加到插件安装
 const pluginPath = path.join(__dirname, '../../packages/index.js');
 let pluginText = fs.readFileSync(pluginPath);
@@ -110,9 +124,10 @@ ${pluginText}
 /** ${ComponentName} Component */
 export * from './${ComponentName}';`;
 const pluginIndex = pluginText.indexOf('[') + 1;
-const pluginNmae = `${ComponentName}Plugin`
+const pluginNmae = `  ${ComponentName}Plugin`
 pluginText = pluginText.slice(0, pluginIndex) + '\n' + pluginNmae + "," + pluginText.slice(pluginIndex);
 fileSave(pluginPath)
   .write(pluginText, 'utf8')
   .end('\n');
+console.log('添加到插件安装');
 console.log('DONE!');
