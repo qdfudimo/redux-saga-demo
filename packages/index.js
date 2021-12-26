@@ -1,13 +1,16 @@
-import{ ButtonPlugin} from "./Button/index"
-import{ InputPlugin} from "./Input/index"
+import { ButtonPlugin } from "./Button/index";
+import { InputPlugin } from "./Input/index";
+const components = [
+    ButtonPlugin,
+    InputPlugin
+]
 const viPlugin = {
     install(app) {
-        ButtonPlugin.install(app);
-        InputPlugin.install(app);
+        components.forEach(item => item.install(app))
     },
-  };
-  
-  export default viPlugin;
-  
-  export * from './Input';
-  export * from './Button';
+};
+
+export default viPlugin;
+
+export * from './Input';
+export * from './Button';
